@@ -6,6 +6,7 @@ public sealed class AwaitableTester : MonoBehaviour
 {
     public static int Counter;
 
+    /*
     async void Start()
     {
         while (true)
@@ -14,13 +15,12 @@ public sealed class AwaitableTester : MonoBehaviour
             await IncrementAsync();
         }
     }
+    */
 
-    /*
     async Awaitable Update()
     {
         await IncrementAsync();
     }
-    */
 
     async Awaitable IncrementAsync()
     {
