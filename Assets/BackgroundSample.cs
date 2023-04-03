@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Experimental.Rendering;
 using File = System.IO.File;
+using Task = System.Threading.Tasks.Task;
 
 public sealed class BackgroundSample : MonoBehaviour
 {
@@ -24,7 +25,9 @@ public sealed class BackgroundSample : MonoBehaviour
         File.WriteAllBytes("Output.png", png);
     }
 
-#else
+#endif
+
+#if false
 
     async void Start()
     {
@@ -38,6 +41,22 @@ public sealed class BackgroundSample : MonoBehaviour
         File.WriteAllBytes("Output.png", png);
 
         await Awaitable.MainThreadAsync();
+    }
+
+#endif
+
+#if true
+
+    async void Start()
+    {
+        var req = await AsyncGPUReadback.RequestAsync(_texture, 0);
+        var image = req.GetData<byte>().ToArray();
+
+        await Task.Run(() => {
+            var png = ImageConversion.
+              EncodeArrayToPNG(image, Format, Width, Height);
+            File.WriteAllBytes("Output.png", png);
+        });
     }
 
 #endif
